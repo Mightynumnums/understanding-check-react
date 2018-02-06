@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Navbar from './Navbar.jsx';
 import Critters from './Critters.jsx';
+import axios from 'axios';
 
 /*
 
