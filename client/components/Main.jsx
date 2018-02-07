@@ -17,14 +17,34 @@ import axios from 'axios';
 
 export default class Main extends Component {
 
+  constructor() { //create a constructor
+    super() //which has state
+    this.state = { //the state is tom's rule#1, it is special and is always set to the'data type' we will be recieving
+      critters: [] //in this example an array
+    }
+    this.selectCritters = this.selectCritters.bind(this); //we bind selectCritter function's 'this' to the constructor with BIND()
+  }
+
+  componentDidMpount() { //check to make sure that the component mounted before we do anything with the data, we want all the data first
+    this.getCritters()
+  }
+
+  selectCritters(critterName) {  //get the data with axios, from the database we have here, and once the route hits api, provide the name of the 'critter' we might have(cat, dog, dragon)
+    axios.get(`/api/${critterName}`)
+      .then(res => res.data) //respond with taht data
+      .then(critters => {
+        this.setState({critters}) //set state from an ampty array, to the animal we are requesting(which will be an array of objects)
+      })
+  }
+
   render() {
     return (
       <div>
         <div id="header">
-          <h1>Gallery of Cute</h1>
+          <h1>Gallery of Cutenesses</h1>
         </div>
-        <Navbar />
-        <Critters />
+        <Navbar selectCritters={this.selectCritters}/>  {/* nav bar has a component navbar with critters*/}
+        <Critters critters = {this.state.critters} />  {/*critters is a component that has all the critters info and pics*/}
       </div>
     )
   }
